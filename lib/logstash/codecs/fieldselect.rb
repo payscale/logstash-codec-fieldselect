@@ -47,7 +47,7 @@ class LogStash::Codecs::Fieldselect < LogStash::Codecs::Base
   def field_selector(data)
     selected = {}
     @fields.each do |field|
-      selected[field] = data[field]
+      selected[field] = data.get("#{field}")
     end
     return selected
   end
@@ -56,11 +56,11 @@ class LogStash::Codecs::Fieldselect < LogStash::Codecs::Base
   def field_concater(data)
     concated = ""
     @fields.each do |field|
-      if data[field] == nil 
+      if data.get("#{field}") == nil 
         concated += ","
         next
       end
-      concated += data[field].to_s + ", "
+      concated += data.get("#{field}").to_s + ", "
     end
     concated.chomp!(", ")
     return concated + "\n"
